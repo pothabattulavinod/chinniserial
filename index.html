@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +8,9 @@
     <!-- JW Player script -->
     <script src="https://ssl.p.jwpcdn.com/player/v/8.22.0/jwplayer.js"></script>
     <!-- JW Player license key -->
-    <script>jwplayer.key = 'EN7MpaKagehNwodFmcDG3/k/QCMXIo8qyzO5Fi+Bxq0=';</script>
+    <script>
+        jwplayer.key = 'EN7MpaKagehNwodFmcDG3/k/QCMXIo8qyzO5Fi+Bxq0=';
+    </script>
 
     <style>
         body {
@@ -20,14 +21,42 @@
         #player {
             width: 100% !important;
             height: 100% !important;
+            position: relative;
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh2Hf1NO8Ir_sMRioZXDYySscfhx0G8NE_L0crKeK8KYpAHQU7-1TNvIc&s=10') no-repeat center center;
+            background-size: cover;
         }
 
+        /* Position title */
+        .jw-title-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+            color: #ff6347;
+        }
+
+        /* Title styling */
+        .jw-title-primary {
+            font-weight: bold;
+            font-size: 1em;
+            color: #ff6347 !important;
+        }
+
+        /* Change progress bar (timer) color */
         .jwplayer .jw-progress {
-            background-color: #FF0000;
+            background-color: #ff6347;
+        }
+
+        .jwplayer .jw-text-time {
+            color: #ff6347 !important;
+        }
+
+        .jwplayer .jw-title {
+            color: #ff6347 !important;
         }
 
         button:hover {
-            background: #FF0000 !important;
+            background: #ff6347 !important;
         }
 
         .jw-icon-forward {
@@ -35,9 +64,15 @@
             background-size: 100%;
         }
 
-        /* Hide the reset option in the right-click menu */
         .jw-rightclick .jw-reset {
             display: none;
+        }
+
+        /* Mobile view adjustments */
+        @media (max-width: 768px) {
+            .jw-title-primary {
+                font-size: 0.8em !important;
+            }
         }
     </style>
 </head>
@@ -50,92 +85,41 @@
         document.addEventListener("DOMContentLoaded", function () {
             var playerInstance = jwplayer("player");
 
-            // Define multiple URLs for the same video
-            var videoUrls = [
-                { file: "https://linksshortner.xyz/AgADTg261903?&.MP4", label: "URL 1" },
-                { file: "https://file-to-link-nx-b8f69ee9ae53.herokuapp.com/dl/66f80b2af72831b3553eeaf7?&.MP4", label: "URL 2" },
-                { file: "https://www.tgxlink.workers.dev/dl/66f80b2d6bda1fcc340b9f4f?&.MP4", label: "URL 3" },
-                { file: "https://www.tg-x-server4.workers.dev/v2/AgADTg47475?&.MP4", label: "URL 4" },
-                { file: "https://tg-movies4u.tgmkvofcl.workers.dev/596451?hash=AgADTg&?.MP4", label: "URL 5" },
-                { file: "https://go.springsfern.in/dl/839706/Saripodhaa%20Sanivaaram%20(2024)%20Telugu%20HQ%20HDRip%20-%201080p%20-%20HEVC%20.mkv&?.MP4", label: "URL 6" },
-                { file: "https://go.springsfern.in/dl/839706?&.MP4", label: "URL 7" },
-                { file: "https://get4me.koyeb.app/411322?&.MP4", label: "URL 8" },
-                { file: "https://file-streamx-697cdb6409cc.herokuapp.com/178255?hash=AgADTg&m=1?hash=undefined?&.MP4", label: "URL 9" }
-            ];
-
-            // Function to get a random URL from the list
-            function getRandomUrl() {
-                const randomIndex = Math.floor(Math.random() * videoUrls.length);
-                return videoUrls[randomIndex].file;
-            }
-
-            // Set up JW Player with a random URL
             playerInstance.setup({
                 aspectratio: "16:9",
-                preload: 'auto',
                 primary: 'html5',
-                sources: [{ file: getRandomUrl() }],
-                tracks: [
-                    {
-                        file: "https://raw.githubusercontent.com/pothabattulavinod/Ss/refs/heads/main/Saripodhaa%20Sanivaaram.vtt",
-                        label: "English",
-                        kind: "captions",
-                        default: true
-                    }
-                ],
-                captions: {
-                    backgroundOpacity: 0,
-                    edgeStyle: "raised"
-                },
+                sources: [{
+                    file: "https://58a49ee706238.streamlock.net:8485/uploads/jio_1720765/e0ff6c2aa5cbadb8b7a99479d32c1af6.mp4/index.m3u8"
+                }],
                 width: '100%',
                 height: '100%',
                 controls: true,
                 displayPlaybackLabel: true,
+                autostart: false,
+                preload: 'none',
                 advertising: {
                     client: "vast",
-                    schedule: [
-                        { offset: "pre", tag: "" }
-                    ]
-                }
+                    schedule: [{
+                        offset: "pre",
+                        tag: ""
+                    }]
+                },
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh2Hf1NO8Ir_sMRioZXDYySscfhx0G8NE_L0crKeK8KYpAHQU7-1TNvIc&s=10',
+                title: "05 OCT 2024",  // Updated Title
             });
 
-            // Handle player errors and try to load another random URL
-            playerInstance.on('error', function () {
-                console.log("Error occurred, trying a different random URL.");
-                playerInstance.load([{ file: getRandomUrl() }]);
-                playerInstance.play();
-            });
-
-            // Save and restore playback time on ready
-            playerInstance.on('ready', function () {
-                var lastTimeKey = 'jwplayer-last-time';
-                var lastTime = localStorage.getItem(lastTimeKey);
-                if (lastTime) {
-                    playerInstance.seek(parseFloat(lastTime));
-                }
-
-                playerInstance.addButton(
-                    'https://www.kindpng.com/picc/b/79-797059_forward-icon-png.png',
-                    'Forward 10 seconds',
-                    function () {
-                        playerInstance.seek(playerInstance.getPosition() + 10);
-                    },
-                    'forward10'
-                );
-            });
-
-            // Save the current playback position when the video is paused
-            playerInstance.on('pause', function () {
-                var lastTimeKey = 'jwplayer-last-time';
-                localStorage.setItem(lastTimeKey, playerInstance.getPosition());
-            });
-
-            // Reset the last playback position when the video is complete
-            playerInstance.on('complete', function () {
-                localStorage.setItem('jwplayer-last-time', 0);
-            });
+            // Add a custom button to forward the video 10 seconds
+            playerInstance.addButton(
+                'https://www.kindpng.com/picc/b/79-797059_forward-icon-png.png',
+                'Forward 10 seconds',
+                function () {
+                    playerInstance.seek(playerInstance.getPosition() + 10);
+                },
+                'forward10'
+            );
         });
     </script>
+
 </body>
 
 </html>
