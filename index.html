@@ -89,7 +89,7 @@
                 aspectratio: "16:9",
                 primary: 'html5',
                 sources: [{
-                    file: "https://58a49ee706238.streamlock.net:8485/uploads/jio_1720765/e0ff6c2aa5cbadb8b7a99479d32c1af6.mp4/index.m3u8"
+                    file: "https://58a49ee706238.streamlock.net:8485/uploads/jio_1721411/1476b9e4b0aa6ad6a62a9e861d9b6a10.mp4/index.m3u8"
                 }],
                 width: '100%',
                 height: '100%',
@@ -105,7 +105,23 @@
                     }]
                 },
                 image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh2Hf1NO8Ir_sMRioZXDYySscfhx0G8NE_L0crKeK8KYpAHQU7-1TNvIc&s=10',
-                title: "05 OCT 2024",  // Updated Title
+                title: "07 OCT 2024",
+            });
+
+            // Force full screen and rotate the screen on play
+            playerInstance.on('play', function() {
+                playerInstance.setFullscreen(true);
+
+                // Check if the screen orientation API is supported
+                if (screen.orientation && screen.orientation.lock) {
+                    // Lock the screen in landscape mode
+                    screen.orientation.lock('landscape').catch(function (error) {
+                        console.log('Screen orientation lock failed: ' + error);
+                    });
+                } else if (window.screen.lockOrientation) {
+                    // For older browsers
+                    window.screen.lockOrientation('landscape');
+                }
             });
 
             // Add a custom button to forward the video 10 seconds
@@ -117,6 +133,19 @@
                 },
                 'forward10'
             );
+
+            // Unlock the orientation when the video ends or the user pauses it
+            playerInstance.on('pause', function() {
+                if (screen.orientation && screen.orientation.unlock) {
+                    screen.orientation.unlock();
+                }
+            });
+
+            playerInstance.on('complete', function() {
+                if (screen.orientation && screen.orientation.unlock) {
+                    screen.orientation.unlock();
+                }
+            });
         });
     </script>
 
